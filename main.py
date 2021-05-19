@@ -88,6 +88,7 @@ except:
 
 try:
     newlinks = set(links)
+    new_add_link = None
     #setで引き算をすると差分がわかる
     if links_flg :
         #今回新しく発見したリンク
@@ -98,10 +99,12 @@ try:
         for link in added:
             #追加されたら通知
             bot.send('リンクが追加されました')
-        
-        for link in removed:
+            new_add_link = 'https://www.chitose.ac.jp' + link
+            bot.send(new_add_link)
+
+        #for link in removed:
             #消去されたら通知
-            bot.send('リンクが消去されました')
+        #    bot.send('リンクが消去されました')
         
         logging.info('Compared links')
 
@@ -110,5 +113,20 @@ except:
     bot.send('比較に失敗しました')
     logging.error('Failed to compare')
     sys.exit(1)
+
+if new_add_link != None:
+    try:
+        with urllib.request.urlopen(new_add_link) as web_file:
+            data = web_file.read()
+            with open('tmp/timeschedule.pdf',mode='wb') as local_file:
+                local_file.write(data)
+
+    except urllib.error.URLError as e:
+        print(e)
+
+
+
+
+
 
 logging.info('DONE')
