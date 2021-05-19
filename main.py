@@ -28,7 +28,7 @@ class LINENotifyBot:
 
 #ログの記録するフォーマットを決める
 log_format = '%(levelname)s : %(asctime)s : %(message)s'
-logging.basicConfig(filename='/tmp/log.log', level=logging.INFO, format=log_format)
+logging.basicConfig(filename='log.log', level=logging.INFO, format=log_format)
 logging.info('START')
 url = 'https://www.chitose.ac.jp/info/access'
 bot = LINENotifyBot(access_token = '80AFrkbQdIc76sTvfg8rCc2GCxlKnq6vYyh9gKtoELV')
@@ -57,8 +57,8 @@ for tag in tags:
 
 #前回取得したリンクをファイルから読み込む
 try:
-    if os.path.isfile('/tmp/links.csv'):
-        with open('/tmp/links.csv', 'r') as f:
+    if os.path.isfile('links.csv'):
+        with open('links.csv', 'r') as f:
             reader = csv.reader(f)
             for row in reader:
                 oldlinks = set(row)
@@ -76,7 +76,7 @@ except:
 
 try:
     #今回取得したリンクを記録する（上書き）
-    with open('/tmp/links.csv', 'w') as f:
+    with open('links.csv', 'w') as f:
         writer = csv.writer(f, lineterminator='\n')
         writer.writerow(links)
     logging.info('Writed csv file')
