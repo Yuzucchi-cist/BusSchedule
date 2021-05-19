@@ -5,6 +5,8 @@ import requests
 import urllib.request, urllib.error
 from bs4 import BeautifulSoup
 import logging
+import pathlib
+import pdf2image
 
 class LINENotifyBot:
     API_URL = "https://notify-api.line.me/api/notify"
@@ -114,6 +116,7 @@ except:
     logging.error('Failed to compare')
     sys.exit(1)
 
+#新しいリンクがあった場合にpdfで保存
 if new_add_link != None:
     try:
         with urllib.request.urlopen(new_add_link) as web_file:
@@ -124,9 +127,15 @@ if new_add_link != None:
     except urllib.error.URLError as e:
         print(e)
 
+    #pdfをpngに変換
+    pdf_files = pathlib.Path('tmp').glob('*.pdf')
+    img_dir = pathlib.Path('tmp')
 
-
-
-
+    for pdf_file in pdf_files:
+        base = pdf_file.stem
+        images = pdf2image.convert_from_path(pdf_file, grayscale=True, size=1200)
+        for index, image in enumerate(images):
+            image.save(img_dir/pathlib.Path(base + '-{}.png'.format(index + 1)),
+                    'png',resolution=500)
 
 logging.info('DONE')
