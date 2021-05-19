@@ -36,7 +36,6 @@ try:
     #HTMLを取得
     html = urllib.request.urlopen(url)
     #HTMLのステータスコード(正常に取得できたかどうか)を記録
-    print(html.getcode())
     logging.info('HTTP STATUS CODE : ' + str(html.getcode()))
 except:
     #取得に失敗した場合のLINEに通知
